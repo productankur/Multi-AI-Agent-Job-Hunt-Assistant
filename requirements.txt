@@ -1,8 +1,7 @@
 streamlit
-crewai
-litellm
+crewai==0.80.0
+litellm==1.55.0
 requests
 python-dotenv
 uvloop
-pyngrok
-langchain-google-genai
+chromadb==0.4.24
