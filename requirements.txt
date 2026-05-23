@@ -1,0 +1,8 @@
+streamlit
+crewai
+litellm
+requests
+python-dotenv
+uvloop
+pyngrok
+langchain-google-genai

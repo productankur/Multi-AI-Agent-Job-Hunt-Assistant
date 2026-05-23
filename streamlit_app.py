@@ -8,10 +8,19 @@ import litellm
 
 litellm.cache = None
 
-# Base path
-base = "/content/drive/MyDrive/job_hunt_assistant"
+# Base path - works everywhere
+base = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(base)
-sys.path.append(f"{base}/utils")
+sys.path.append(os.path.join(base, "utils"))
+
+# Secret keys - works on both Colab and Streamlit Cloud
+try:
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+    USAJOBS_API_KEY = st.secrets["USAJOBS_API_KEY"]
+    os.environ["GROQ_API_KEY"] = GROQ_API_KEY
+    os.environ["USAJOBS_API_KEY"] = USAJOBS_API_KEY
+except:
+    from config import GROQ_API_KEY, USAJOBS_API_KEY
 
 # Page config
 st.set_page_config(
@@ -31,7 +40,7 @@ results_per_page = st.sidebar.slider("Number of Results", 1, 10, 5)
 
 # Resume input
 st.sidebar.header("📄 Your Resume")
-resume_path = f"{base}/data/sample_resume.txt"
+resume_path = os.path.join(base, "data", "sample_resume.txt")
 with open(resume_path, "r") as f:
     default_resume = f.read()
 resume = st.sidebar.text_area("Paste your resume here", value=default_resume, height=300)
@@ -39,7 +48,7 @@ resume = st.sidebar.text_area("Paste your resume here", value=default_resume, he
 # Fetch jobs button
 if st.sidebar.button("🔎 Search Jobs"):
     with st.spinner("Fetching jobs from USAJobs..."):
-        spec = importlib.util.spec_from_file_location("usajobs_api", f"{base}/utils/usajobs_api.py")
+        spec = importlib.util.spec_from_file_location("usajobs_api", os.path.join(base, "utils", "usajobs_api.py"))
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
         jobs = mod.fetch_usajobs(keyword, location, results_per_page)
@@ -77,15 +86,15 @@ if "selected_job" in st.session_state:
     st.header("🤖 Generating Application Materials...")
 
     # Load agents
-    spec1 = importlib.util.spec_from_file_location("jd_analyst", f"{base}/agents/jd_analyst.py")
+    spec1 = importlib.util.spec_from_file_location("jd_analyst", os.path.join(base, "agents", "jd_analyst.py"))
     jd_analyst = importlib.util.module_from_spec(spec1)
     spec1.loader.exec_module(jd_analyst)
 
-    spec2 = importlib.util.spec_from_file_location("resume_cl_agent", f"{base}/agents/resume_cl_agent.py")
+    spec2 = importlib.util.spec_from_file_location("resume_cl_agent", os.path.join(base, "agents", "resume_cl_agent.py"))
     resume_cl = importlib.util.module_from_spec(spec2)
     spec2.loader.exec_module(resume_cl)
 
-    spec3 = importlib.util.spec_from_file_location("messaging_agent", f"{base}/agents/messaging_agent.py")
+    spec3 = importlib.util.spec_from_file_location("messaging_agent", os.path.join(base, "agents", "messaging_agent.py"))
     messaging = importlib.util.module_from_spec(spec3)
     spec3.loader.exec_module(messaging)
 
@@ -97,7 +106,7 @@ if "selected_job" in st.session_state:
             from crewai import Crew
 
             agent1 = jd_analyst.get_jd_analyst_agent()
-            task1 = jd_analyst.create_jd_analysis_task(agent1, job_description,  title, agency)
+            task1 = jd_analyst.create_jd_analysis_task(agent1, job_description)
 
             agent2 = resume_cl.get_resume_cl_agent()
             task2 = resume_cl.create_resume_cl_task(agent2, job_description, resume)
