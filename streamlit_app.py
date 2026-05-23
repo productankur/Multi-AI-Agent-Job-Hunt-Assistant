@@ -30,7 +30,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("💼 AI Job Hunt Assistant")
+st.title("💼 Multi AI Agent - Job Hunt Assistant")
 st.markdown("*Powered by CrewAI + Groq*")
 
 # Sidebar inputs
