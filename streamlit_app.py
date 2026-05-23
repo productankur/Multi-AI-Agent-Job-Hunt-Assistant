@@ -5,6 +5,7 @@ import asyncio
 import uvloop
 import importlib.util
 import litellm
+import time
 
 litellm.cache = None
 
@@ -105,22 +106,31 @@ if "selected_job" in st.session_state:
         async def _run():
             from crewai import Crew
 
+            # Agent 1
             agent1 = jd_analyst.get_jd_analyst_agent()
             task1 = jd_analyst.create_jd_analysis_task(agent1, job_description)
+            crew1 = Crew(agents=[agent1], tasks=[task1], verbose=True)
+            result1 = await crew1.kickoff_async()
+            time.sleep(10)  # Wait 10 seconds before next agent
 
+            # Agent 2
             agent2 = resume_cl.get_resume_cl_agent()
             task2 = resume_cl.create_resume_cl_task(agent2, job_description, resume)
+            crew2 = Crew(agents=[agent2], tasks=[task2], verbose=True)
+            result2 = await crew2.kickoff_async()
+            time.sleep(10)  # Wait 10 seconds before next agent
 
+            # Agent 3
             agent3 = messaging.get_messaging_agent()
             task3 = messaging.create_messaging_task(agent3, job_title, agency, resume[:500])
+            crew3 = Crew(agents=[agent3], tasks=[task3], verbose=True)
+            result3 = await crew3.kickoff_async()
 
-            crew = Crew(agents=[agent1, agent2, agent3], tasks=[task1, task2, task3], verbose=True)
-            result = await crew.kickoff_async()
-            return result
+            return f"{result1}\n\n---\n\n{result2}\n\n---\n\n{result3}"
 
         return loop.run_until_complete(_run())
 
-    with st.spinner("⏳ AI agents are working..."):
+    with st.spinner("⏳ AI agents are working... (this may take up to 1 minute)"):
         result = run_all_agents()
 
     st.success("✅ Application materials generated!")
