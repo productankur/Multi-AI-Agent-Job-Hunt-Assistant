@@ -25,7 +25,7 @@ except:
 
 # Page config
 st.set_page_config(
-    page_title="AI Job Hunt Assistant",
+    page_title="Multi AI Agent - Job Hunt Assistant",
     page_icon="💼",
     layout="wide"
 )
