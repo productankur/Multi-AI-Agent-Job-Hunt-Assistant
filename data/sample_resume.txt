@@ -1,0 +1,22 @@
+John Doe
+Email: johndoe@email.com | Phone: 123-456-7890 | LinkedIn: linkedin.com/in/johndoe
+
+SUMMARY
+Experienced data analyst with 5 years of experience in Python, SQL, and data visualization.
+Strong background in federal reporting and government data systems.
+
+EXPERIENCE
+Data Analyst | ABC Agency | 2020 - Present
+- Analyzed large datasets using Python and SQL
+- Built dashboards using Tableau and Power BI
+- Collaborated with cross-functional teams on federal reporting projects
+
+Junior Analyst | XYZ Corp | 2018 - 2020
+- Supported data collection and cleaning processes
+- Assisted in preparing reports for senior management
+
+EDUCATION
+B.S. Computer Science | State University | 2018
+
+SKILLS
+Python, SQL, Tableau, Power BI, Excel, Data Modeling, Federal Reporting

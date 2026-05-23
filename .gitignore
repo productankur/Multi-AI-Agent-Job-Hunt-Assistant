@@ -1,0 +1,16 @@
+# Environment variables
+utils/.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Colab specific
+.ipynb_checkpoints/
+
+# Data outputs
+data/cover_letters/
+data/applications_log.csv
+data/report.md
+data/linkedin_message.txt
