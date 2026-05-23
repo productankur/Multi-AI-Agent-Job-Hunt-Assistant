@@ -6,7 +6,12 @@ import litellm
 litellm.cache = None
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
-from config import GROQ_API_KEY
+
+try:
+    import streamlit as st
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+except:
+    from config import GROQ_API_KEY
 
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
@@ -24,15 +29,11 @@ def get_jd_analyst_agent():
         verbose=True
     )
 
-def create_jd_analysis_task(agent, job_description, PositionTitle, OrganizationName):
+def create_jd_analysis_task(agent, job_description):
     return Task(
         description=f"""Analyze the following job description and extract key details:
 
-        Job Description: {job_description}
-
-        Job Title: {PositionTitle}
-
-        Agency: {OrganizationName}
+        {job_description}
 
         Extract and organize:
         1. Job Title and Agency
@@ -49,5 +50,5 @@ def create_jd_analysis_task(agent, job_description, PositionTitle, OrganizationN
         - Salary and Location
         """,
         agent=agent,
-        output_file="/drive/MyDrive/job_hunt_assistant/data/report.md"
+        output_file="data/report.md"
     )

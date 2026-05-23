@@ -6,7 +6,12 @@ import litellm
 litellm.cache = None
 
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'utils'))
-from config import GROQ_API_KEY
+
+try:
+    import streamlit as st
+    GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
+except:
+    from config import GROQ_API_KEY
 
 os.environ["GROQ_API_KEY"] = GROQ_API_KEY
 
@@ -46,6 +51,5 @@ def create_resume_cl_task(agent, job_description, resume):
         - Full Cover Letter
         """,
         agent=agent,
-        output_file="/drive/MyDrive/job_hunt_assistant/data/cover_letters/cover_letter.md"
-        
+        output_file="data/cover_letters/cover_letter.md"
     )
