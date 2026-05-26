@@ -3,7 +3,7 @@
 > An AI-powered job application assistant built with CrewAI, Groq, and Streamlit that automates the entire job application process using multiple specialized AI agents.
 
 ## 🌐 Live Demo
-[Click here to try the app](https://productankur-multi-ai-agent-job-hunt-assistant.streamlit.app)
+👉 [Launch Fraud Detection App](https://productankur-multi-ai-agent-job-hunt-assistant.streamlit.app)
 
 ---
 
